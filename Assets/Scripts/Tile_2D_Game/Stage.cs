@@ -131,26 +131,51 @@ public class Stage : MonoBehaviour
     {
         if (player == null) return;
         int half = SearchRange / 2;
-        for(int i = 0; i < SearchRange; i++)
+        int playerRow = player.currentTileId / MapWidth;
+        int playerCol = player.currentTileId % MapWidth;
+
+        // 범위 내 모든 타일 visited 처리
+        for (int i = 0; i < SearchRange; i++)
         {
-            for(int j = 0; j < SearchRange; j++)
+            for (int j = 0; j < SearchRange; j++)
             {
-                var tileId = (player.currentTileId - (half + half * MapWidth)) + i * MapWidth + j;
-                if (tileId >= 0 && tileId < MapWidth * MapHeight && _map.Tiles[tileId] != null)
-                {
-                    _map.Tiles[tileId].IsVisited = true;
-                    foreach(var tile in _map.Tiles[tileId].Adjacents)
-                    {
-                        if(tile != null)
-                        {
-                            tile.UpdateFowTileId();
-                            DecorateTile(tile.Id);
-                        }
-                    }
-                    DecorateTile(tileId);
-                }
+                int r = playerRow - half + i;
+                int c = playerCol - half + j;
+                if (r < 0 || r >= MapHeight || c < 0 || c >= MapWidth) continue;
+                _map.Tiles[r * MapWidth + c].IsVisited = true;
             }
         }
+
+        // 범위 + 테두리 1칸까지
+        for (int i = -1; i <= SearchRange; i++)
+        {
+            for (int j = -1; j <= SearchRange; j++)
+            {
+                int r = playerRow - half + i;
+                int c = playerCol - half + j;
+                if (r < 0 || r >= MapHeight || c < 0 || c >= MapWidth) continue;
+                int tileId = r * MapWidth + c;
+                UpdateFowTileIdByGrid(tileId);
+                DecorateTile(tileId);
+            }
+        }
+    }
+
+    private void UpdateFowTileIdByGrid(int tileId)
+    {
+        int row = tileId / MapWidth;
+        int col = tileId % MapWidth;
+        var tile = _map.Tiles[tileId];
+        tile.FowTileId = 0;
+
+        if (row - 1 < 0 || !_map.Tiles[(row - 1) * MapWidth + col].IsVisited)
+            tile.FowTileId |= 1 << (int)Sides.Top;
+        if (col - 1 < 0 || !_map.Tiles[row * MapWidth + (col - 1)].IsVisited)
+            tile.FowTileId |= 1 << (int)Sides.Left;
+        if (col + 1 >= MapWidth || !_map.Tiles[row * MapWidth + col + 1].IsVisited)
+            tile.FowTileId |= 1 << (int)Sides.Right;
+        if (row + 1 >= MapHeight || !_map.Tiles[(row + 1) * MapWidth + col].IsVisited)
+            tile.FowTileId |= 1 << (int)Sides.Bottom;
     }
     public void DecorateTile(int tileId)
     {
@@ -165,9 +190,10 @@ public class Stage : MonoBehaviour
         {
             renderer.sprite = null;
         }
-        if (!tile.IsVisited)
+        if (!tile.IsVisited && FowSprites != null && FowSprites.Length > 0)
         {
-            renderer.sprite = FowSprites[tile.FowTileId];
+            int fowIndex = Mathf.Clamp(tile.FowTileId, 0, FowSprites.Length - 1);
+            renderer.sprite = FowSprites[fowIndex];
         }
     }
 

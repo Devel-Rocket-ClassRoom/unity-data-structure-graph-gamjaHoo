@@ -303,6 +303,7 @@ MonoBehaviour:
   TilePrefab: {fileID: 5981586152527734085, guid: c9a53845bf561724ab17a7f347991900, type: 3}
   MapWidth: 20
   MapHeight: 20
+  SearchRange: 5
   ErodePercent: 0.2
   ErodeIterations: 3
   LakePercent: 0.01
@@ -335,6 +336,23 @@ MonoBehaviour:
   - {fileID: 21300038, guid: 6dda2095192964815b349ac505a5e664, type: 3}
   - {fileID: 21300040, guid: 6dda2095192964815b349ac505a5e664, type: 3}
   - {fileID: 21300042, guid: 6dda2095192964815b349ac505a5e664, type: 3}
+  FowSprites:
+  - {fileID: 21300000, guid: dfa5f63634ba24c06a7c899467e4f9f3, type: 3}
+  - {fileID: 21300002, guid: dfa5f63634ba24c06a7c899467e4f9f3, type: 3}
+  - {fileID: 21300004, guid: dfa5f63634ba24c06a7c899467e4f9f3, type: 3}
+  - {fileID: 21300006, guid: dfa5f63634ba24c06a7c899467e4f9f3, type: 3}
+  - {fileID: 21300008, guid: dfa5f63634ba24c06a7c899467e4f9f3, type: 3}
+  - {fileID: 21300010, guid: dfa5f63634ba24c06a7c899467e4f9f3, type: 3}
+  - {fileID: 21300012, guid: dfa5f63634ba24c06a7c899467e4f9f3, type: 3}
+  - {fileID: 21300014, guid: dfa5f63634ba24c06a7c899467e4f9f3, type: 3}
+  - {fileID: 21300016, guid: dfa5f63634ba24c06a7c899467e4f9f3, type: 3}
+  - {fileID: 21300018, guid: dfa5f63634ba24c06a7c899467e4f9f3, type: 3}
+  - {fileID: 21300020, guid: dfa5f63634ba24c06a7c899467e4f9f3, type: 3}
+  - {fileID: 21300022, guid: dfa5f63634ba24c06a7c899467e4f9f3, type: 3}
+  - {fileID: 21300024, guid: dfa5f63634ba24c06a7c899467e4f9f3, type: 3}
+  - {fileID: 21300026, guid: dfa5f63634ba24c06a7c899467e4f9f3, type: 3}
+  - {fileID: 21300028, guid: dfa5f63634ba24c06a7c899467e4f9f3, type: 3}
+  - {fileID: 21300030, guid: dfa5f63634ba24c06a7c899467e4f9f3, type: 3}
   playerPrefab: {fileID: 4082874020942000586, guid: 57810de65beadcf439d1ec15a8325e5d, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
