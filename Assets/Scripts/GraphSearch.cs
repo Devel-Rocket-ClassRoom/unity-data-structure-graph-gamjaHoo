@@ -235,4 +235,61 @@ public class GraphSearch
 
         return Mathf.Abs(ax - bx) + Mathf.Abs(ay - by);
     }
+
+    public List<Tile> tilePath = new();
+
+    public void AstarTile(Tile[] allTiles, Tile start, Tile end, int mapWidth)
+    {
+        tilePath.Clear();
+        foreach (var t in allTiles) t.Previous = null;
+
+        var distances = new int[allTiles.Length];
+        for (int i = 0; i < distances.Length; i++) distances[i] = int.MaxValue;
+        distances[start.Id] = 0;
+
+        var pq = new PriorityQueue<Tile, int>();
+        pq.Enqueue(start, HeuristicTile(start, end, mapWidth));
+        var visited = new HashSet<Tile>();
+
+        while (pq.Count > 0)
+        {
+            var u = pq.Dequeue();
+            if (visited.Contains(u)) continue;
+            visited.Add(u);
+
+            if (u == end)
+            {
+                var temp = u;
+                while (temp != null)
+                {
+                    tilePath.Add(temp);
+                    temp = temp.Previous;
+                }
+                tilePath.Reverse();
+                break;
+            }
+
+            foreach (var v in u.Adjacents)
+            {
+                if (v == null || !v.CanMove || visited.Contains(v)) continue;
+
+                int newDist = distances[u.Id] + v.MoveCost;
+                if (newDist < distances[v.Id])
+                {
+                    distances[v.Id] = newDist;
+                    v.Previous = u;
+                    pq.Enqueue(v, newDist + HeuristicTile(v, end, mapWidth));
+                }
+            }
+        }
+    }
+
+    private int HeuristicTile(Tile a, Tile b, int mapWidth)
+    {
+        int ax = a.Id % mapWidth;
+        int ay = a.Id / mapWidth;
+        int bx = b.Id % mapWidth;
+        int by = b.Id / mapWidth;
+        return Mathf.Abs(ax - bx) + Mathf.Abs(ay - by);
+    }
 }
